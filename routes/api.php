@@ -23,14 +23,24 @@ Route::post('auth/register', 'Auth\RegisterController@register');
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('tasks', 'TaskController@index');
-    Route::get('tasks/{task}', 'TaskController@show');
+    Route::get('tasks/{task}', 'TaskController@show')
+        ->middleware('can:view,task');
     Route::post('tasks', 'TaskController@store');
-    Route::put('tasks/{task}', 'TaskController@update');
-    Route::delete('tasks/{task}', 'TaskController@delete');
+    Route::put('tasks/{task}', 'TaskController@update')
+        ->middleware('can:update,task');
+    Route::delete('tasks/{task}', 'TaskController@delete')
+        ->middleware('can:delete,task');
+    Route::post('tasks/{task}/{label}', 'TaskController@addLabel')
+        ->middleware('can:manageLabels,task,label');
+    Route::delete('tasks/{task}/{label}', 'TaskController@removeLabel')
+        ->middleware('can:manageLabels,task,label');
 
     Route::get('labels', 'LabelController@index');
-    Route::get('labels/{label}', 'LabelController@show');
+    Route::get('labels/{label}', 'LabelController@show')
+        ->middleware('can:view,label');
     Route::post('labels', 'LabelController@store');
-    Route::put('labels/{label}', 'LabelController@update');
-    Route::delete('labels/{label}', 'LabelController@delete');
+    Route::put('labels/{label}', 'LabelController@update')
+        ->middleware('can:update,label');
+    Route::delete('labels/{label}', 'LabelController@delete')
+        ->middleware('can:delete,label');
 });

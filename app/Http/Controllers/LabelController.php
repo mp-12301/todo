@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class LabelController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Label::all();
+        return $request->user()->labels()->get();
     }
 
     public function show(Label $label)
@@ -19,7 +19,7 @@ class LabelController extends Controller
 
     public function store(Request $request)
     {
-        $label = Label::create($request->all());
+        $label = $request->user()->labels()->create($request->all());
 
         return response()->json($label, 201);
     }

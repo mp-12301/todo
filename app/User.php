@@ -44,4 +44,15 @@ class User extends Authenticatable
 
         return $this->api_token;
     }
+
+    public function tasks() 
+    {
+        return $this->hasMany('App\Task');
+    }
+
+
+    public function labels() 
+    {
+        return $this->hasMany('App\Label');
+    }
 }
